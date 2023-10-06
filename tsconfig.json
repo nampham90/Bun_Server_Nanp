@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "target": "es6", // or a more recent ecmascript version
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "composite": true,
+    "strict": true,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "types": [
+      "bun-types" // add Bun global
+    ],
+    "paths": {
+      "@config/*":["./src/config/*"],
+      "@common/*":["./src/common/*"],
+      "@routes/*":["./src/routes/*"],
+      "@nanp/*":["./src/NANP/*"],
+      "@models/*":["./src/models/*"]
+    }
+  }
+}
