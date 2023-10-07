@@ -1,5 +1,6 @@
+import { PageInfo } from "@common/pageHelper/PageInfo";
 import Sys_Department from "@models/system/sys_department";
-import { Op } from "sequelize";
+import { Op , Sequelize} from "sequelize";
 
 interface SearchCondition {
     [key: string]: any;
@@ -7,7 +8,7 @@ interface SearchCondition {
 
 interface ISysDepartmentRepo {
     save(department: Sys_Department): Promise<Sys_Department>;
-    retrieveAll(searchParams: {department_name:string}): Promise<Sys_Department[]>;
+    retrieveAll(searchParams: {department_name:string}): Promise<PageInfo<Sys_Department>>;
     retrieveById(departmentId: number): Promise<Sys_Department | null>;
     update(department: Sys_Department): Promise<number>;
     delete(departmentId: number): Promise<number>;
@@ -28,12 +29,30 @@ class SysDepartmentRepo implements ISysDepartmentRepo {
             throw new Error("Failed to create Sys_Department.");
         }
     }
-    async retrieveAll(searchParams: { department_name: string}): Promise<Sys_Department[]> {
+    async retrieveAll(searchParams: { department_name: string, pageSize: number, pageNum: number}): Promise<PageInfo<Sys_Department>>{
+        let pageSize = 0;
+        let pageNum = 0;
+        let n = 0
         try {
             let condition: SearchCondition = {}
+            if(searchParams?.pageSize) pageSize = searchParams.pageSize;
+            if(searchParams?.pageNum){
+                pageNum = searchParams.pageNum;
+                if(pageNum > 0) {
+                    n = pageNum - 1;
+                }
+            } 
+            const result = await Sys_Department.findOne({
+                attributes: [
+                    [Sequelize.fn('COUNT',Sequelize.col('*')),'cnt']
+                ]
+            }) 
+            let totalRows = result?.dataValues.cnt;
             if(searchParams?.department_name)
-               condition.department_name = { [Op.like]: `%${searchParams.department_name}%` };
-            return await Sys_Department.findAll({where: condition});
+            condition.department_name = { [Op.like]: `%${searchParams.department_name}%` };
+            let data = await Sys_Department.findAll({where: condition,limit: pageSize, offset:pageSize*n});
+            let pageInfo = new PageInfo(totalRows,data,pageNum,pageSize);
+            return pageInfo;
         } catch (error) {
             throw new Error("Failed to retrieve Tutorials!");
         }

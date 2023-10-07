@@ -16,6 +16,7 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.33.0",
     "sequelize-typescript": "^2.1.5",
+    "socket.io": "^4.7.2",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0"
   },

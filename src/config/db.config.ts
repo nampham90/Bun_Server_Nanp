@@ -1,8 +1,8 @@
 export const config = {
     HOST: "localhost",
     PORT: "3306",
-    USER: "Nampham",
-    PASSWORD: "wmspass",
+    USER: "root",//root
+    PASSWORD: "@Root@123",//@Root@123
     DB: "testdb",
     pool: {
       max: 5,

@@ -18,10 +18,10 @@ export class PageInfo<T> {
     navigateFirstPage: number;
     navigateLastPage: number;
 
-    constructor(allData: T[], data: T[], pageNum: number, pageSize: number) {
+    constructor(totalRows: number, data: T[], pageNum: number, pageSize: number) {
         if (pageNum === 0 && pageSize === 0 || data.length === 0) {
-            this.total = allData.length;
-            this.list = allData;
+            this.total = totalRows;
+            this.list = data;
             this.pageNum = pageNum;
             this.pageSize = pageSize;
             this.size = data.length;
@@ -39,7 +39,7 @@ export class PageInfo<T> {
             this.navigateFirstPage = 0;
             this.navigateLastPage = 0;
         } else {
-            const total = allData.length;
+            const total = totalRows;
             const pages = this.getPages(total, pageSize);
             const endRow = this.getEndrow(total, pageNum, pageSize, pages);
             const hasNextPage = this.gethasNextPage(total, pageNum, pageSize, pages);

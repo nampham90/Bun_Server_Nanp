@@ -13,8 +13,8 @@ class SysDepartmentRoutes {
     }
 
     intializeRoutes() {
-        this.router.post("/ant100addPhongban", this.sysDepartmentController.create);
+        this.router.post(Const.SysDepartmentCreate, this.sysDepartmentController.create);
+        this.router.post(Const.SysDepartmentFindAll, this.sysDepartmentController.findAll);
     }
 }
-
 export default new SysDepartmentRoutes().router;
