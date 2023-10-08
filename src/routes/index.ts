@@ -12,7 +12,7 @@ export default class Routes {
         app.use("/api/phongban", sysdepartmentRoutes);
 
         // // route sysuser
-        // app.use("/api/user/", sysuserRoutes);
+        app.use("/api/user/", sysuserRoutes);
 
         // // route sysrole
         // app.use("/api/role/", sysuserRoutes);

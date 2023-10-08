@@ -1,9 +1,20 @@
 
 
 export const ErrorEnum = {
+
     SYS_ERR_GLOBAL: [1000,"Lỗi hệ thống chung Ngoại lệ xử lý hệ thống, vui lòng thử lại sau"],
     SYS_ERR_CREATE_FAILED: [1001,"Không thể thêm dữ liệu"],
-    SYS_ERR_UPDATE_FAILED: [1002,"Không thể sửa đổi dữ liệu"]
+    SYS_ERR_UPDATE_FAILED: [1002,"Không thể sửa đổi dữ liệu"],
+    SYS_ERR_DELETE_FAILED: [1003,"Không thể Xóa dữ liệu"],
+
+    SYS_ERR_VALIDATE: [1100, "1%"],
+    SYS_ERR_TOKEN: [1101, "Token không hợp lệ !"],
+    SYS_ERR_FIELD_REQUEST: [1102, "Request không hơp lệ !"],
+    SYS_ERR_JSON_REQUEST: [1103, "JSON không hơp lệ !"],
+    SYS_ERR_CODE: [1103, "Code không hơp lệ !"],
+
+    //spcm00101
+    SPCM00101_ERR_LOGIN: [1200, "Email hoặc mật khẩu khâu đúng !"]
 }
 
 

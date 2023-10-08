@@ -33,8 +33,7 @@ class Database {
             Sys_Role,
             Sys_Department,
             Sys_Permission
-           ],
-
+           ]
         });
         Sys_User.belongsToMany(Sys_Role, {
             through: "user_role",

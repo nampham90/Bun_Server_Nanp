@@ -1,5 +1,5 @@
 
-import express, {Application} from 'express';
+import express, {Application, Request, Response, NextFunction} from 'express';
 import cors, { CorsOptions } from 'cors';
 import {Server as HttpServer} from 'http';
 import {Server as SocketIOServer} from 'socket.io';
@@ -7,6 +7,8 @@ import Routes from './routes';
 import Database from './db';
 import helmet from "helmet";
 import * as bodyParser from "body-parser";
+import { handleJsonError } from '@middlewares/checkJson';
+
 export default class Server {
     private app: Application;
     private httpServer: HttpServer;
@@ -33,6 +35,7 @@ export default class Server {
         this.app.use(helmet());
         this.app.use(bodyParser.json());
         this.app.use(express.urlencoded({extended: true}));
+        this.app.use(handleJsonError);
     }
 
     private syncDatabase(): void {

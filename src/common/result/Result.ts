@@ -24,4 +24,9 @@ export class Result<T> {
         const errorCode = new ErrorCodeEnum(arrayCodeError);
         return new Result<T>(errorCode.getCode(), errorCode.getMsg());
     }
+
+    static failureCodeRelease<T>(arrayCodeError: any, newmsg:string): Result<T> {
+        const errorCode = new ErrorCodeEnum(arrayCodeError);
+        return new Result<T>(errorCode.getCode(), errorCode.getMsg().replace("1%",newmsg));
+    }
 }

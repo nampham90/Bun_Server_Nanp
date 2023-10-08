@@ -1,4 +1,5 @@
 import AbstractRequest from "@common/abstract/AbstractRequest";
+import Sys_Department from "@models/system/sys_department";
 import {Request, Response} from 'express';
 import Joi, { Schema } from 'joi';
 interface Department {
@@ -8,11 +9,12 @@ interface Department {
     order_num: number
 }
 export default class SysDepartmentRegistRequest extends AbstractRequest {
-    public department_name: string = "";
-    public department_Error: any;
-    public state: boolean = true;
-    public father_id: number = 0;
-    public order_num: number = 1;
+    //public department_name: string = "";
+    public department_Error: string = "";
+    // public state: boolean = true;
+    // public father_id: number = 0;
+    // public order_num: number = 1;
+    public department!: Sys_Department;
     constructor(req: Request,res:Response) {
         super(req,res)
         const {condition} = req.body;
@@ -21,21 +23,19 @@ export default class SysDepartmentRegistRequest extends AbstractRequest {
             const validationResult = this.validateDepartment(condition);
             if (validationResult.error) {
                 // Xử lý khi đối tượng không hợp lệ, ví dụ: gán lỗi vào department_nameError
-                this.department_Error = validationResult.error;
+                this.department_Error = validationResult.error.details[0].message;
             } else {
                 // Đối tượng hợp lệ, gán giá trị từ condition vào các trường
-                const department: Department = condition as Department;
-                this.department_name = department.department_name;
-                this.state = department.state;
-                this.father_id = department.father_id;
-                this.order_num = department.order_num;
+                const department: Sys_Department = condition as Sys_Department;
+                this.department = department;
+                this.department.lang = this.lang;
             }
         }
     }
 
     private validateDepartment(department: Department): Joi.ValidationResult {
         const schema: Schema = Joi.object({
-            department_name: Joi.string().min(6).max(255).required(),
+            department_name: Joi.string().min(1).max(50).required(),
             state: Joi.boolean().required(),
             father_id: Joi.number().integer().required(),
             order_num: Joi.number().integer().required(),

@@ -34,7 +34,7 @@ export default class Sys_User extends Model {
         type: DataType.INTEGER,
         field: "sex"
     })
-    sex?: string;
+    sex?: number;
 
 
     @Column({

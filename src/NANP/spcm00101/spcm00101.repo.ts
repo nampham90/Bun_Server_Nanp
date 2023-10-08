@@ -1,86 +1,27 @@
-import Tutorial from "@models/tutorial.model";
-import { Op } from "sequelize";
-interface ITutorialRepo {
-    save(tutorial: Tutorial): Promise<Tutorial>;
-    retrieveAll(searchParams: {title:string, published: boolean}): Promise<Tutorial[]>;
-    retrieveById(tutorialId: number): Promise<Tutorial | null>;
-    update(tutorial: Tutorial): Promise<number>;
-    delete(tutorialId: number): Promise<number>;
-    deleteAll(): Promise<number>
+import Sys_User from "@models/system/sys_user.model";
+import { Op , Sequelize} from "sequelize";
+
+interface ISpcm00101Repo {
+   login(condition: {email:string, password:string}): Promise<Sys_User | null>;
 }
 
-interface SearchCondition {
-    title?: Object;
-    published?: boolean;
+class Spcm00101LoginRepo implements ISpcm00101Repo {
+
+  async login(condition: { email: string; password: string; }): Promise<Sys_User | null> {
+     try {
+        const pass = (await Bun.password.hash(condition.password)).substring(0,31);
+        return await Sys_User.findOne({
+           where: {
+              email: condition.email,
+              password: { [Op.like] : pass + '%'}
+           }
+        });
+     } catch (error) {
+        throw new Error("Error truy vấn hệ thống");
+     }
+  }
 }
 
-class TutorialRepo implements ITutorialRepo {
-    async save(tutorial: Tutorial): Promise<Tutorial> {
-        try {
-            return await Tutorial.create({
-              title: tutorial.title,
-              description: tutorial.description,
-              published: tutorial.published
-            });
-        } catch (err) {
-            throw new Error("Failed to create Tutorial!");
-        }
-    }
-    async  retrieveAll(searchParams: {title?: string, published?: boolean}): Promise<Tutorial[]> {
-        try {
-            let condition: SearchCondition = {};
-        
-            if (searchParams?.published) condition.published = true;
-        
-            if (searchParams?.title)
-              condition.title = { [Op.like]: `%${searchParams.title}%` };
-        
-            return await Tutorial.findAll({ });
-          } catch (error) {
-            throw new Error("Failed to retrieve Tutorials!");
-          }
-    }
-    async retrieveById(tutorialId: number): Promise<Tutorial | null> {
-        try {
-            return await Tutorial.findByPk(tutorialId);
-          } catch (error) {
-            throw new Error("Failed to retrieve Tutorials!");
-          }
-    }
-    async update(tutorial: Tutorial): Promise<number> {
-        const { id, title, description, published } = tutorial;
+export default new Spcm00101LoginRepo();
 
-        try {
-          const affectedRows = await Tutorial.update(
-            { title, description, published },
-            { where: { id: id } }
-          );
-      
-          return affectedRows[0];
-        } catch (error) {
-          throw new Error("Failed to update Tutorial!");
-        }
-    }
-    async delete(tutorialId: number): Promise<number> {
-        try {
-            const affectedRows = await Tutorial.destroy({ where: { id: tutorialId } });
-        
-            return affectedRows;
-          } catch (error) {
-            throw new Error("Failed to delete Tutorial!");
-          }
-    }
-    async deleteAll(): Promise<number> {
-        try {
-            return Tutorial.destroy({
-              where: {},
-              truncate: false
-            });
-          } catch (error) {
-            throw new Error("Failed to delete Tutorials!");
-          }
-    }
 
-}
-
-export default new TutorialRepo();

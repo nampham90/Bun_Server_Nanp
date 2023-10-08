@@ -1,22 +1,17 @@
 import {Router} from 'express';
-import { login } from '@nanp/spcm00101/spcm00101.controller';
-import TutorialController from '@nanp/spcm00101/tutorial.controller'
-import SysDepartmentController from '@nanp/system/sysdepartment/sysdepartment.controller';
+import Spmt00101Controller from './spcm00101.controller';
 
 class Spcm00101Routes {
    router = Router();
 
-   tutorialController = new TutorialController();
-   sysDepartmentController = new SysDepartmentController();
+   spmt00101Controller = new Spmt00101Controller();
 
    constructor() {
         this.intializeRoutes();
    }
 
    intializeRoutes() {
-        this.router.post("/login", login);
-        this.router.post("/tutorialsave", this.tutorialController.create)
-        this.router.post("/tutorialupdate", this.tutorialController.update)
+        this.router.post("/login", this.spmt00101Controller.login);
    }
 }
 

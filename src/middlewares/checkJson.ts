@@ -1,13 +1,11 @@
+import { ErrorEnum } from '@common/enums/ErrorCodeEnum';
+import { Result } from '@common/result/Result';
 import { Request, Response, NextFunction } from 'express';
 
-// Middleware kiểm tra xem req.body có phải là chuỗi JSON hợp lệ không
-function checkJSON(req: Request, res: Response, next: NextFunction) {
-  try {
-    JSON.parse(req.body);
-    next(); // Nếu parse JSON thành công, tiếp tục xử lý request
-  } catch (error) {
-    res.status(400).json({ error: 'req.body không phải là chuỗi JSON hợp lệ' });
+export function handleJsonError(error: any, req: Request, res: Response, next: NextFunction) {
+  if (error instanceof SyntaxError && 'body' in error) {
+    res.status(400).send(Result.failureCode(ErrorEnum.SYS_ERR_JSON_REQUEST));
+  } else {
+    next();
   }
 }
-
-export default checkJSON;

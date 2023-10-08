@@ -25,7 +25,8 @@
       "@common/*":["./src/common/*"],
       "@routes/*":["./src/routes/*"],
       "@nanp/*":["./src/NANP/*"],
-      "@models/*":["./src/models/*"]
+      "@models/*":["./src/models/*"],
+      "@middlewares/*":["./src/middlewares/*"],
     }
   }
 }
