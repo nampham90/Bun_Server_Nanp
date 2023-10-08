@@ -18,6 +18,7 @@ interface ISysUserRepo {
 
 class SysUserRepo implements ISysUserRepo {
 
+    // đăng ký tài khoản
     async save(department_id: number,user: Sys_User,roleids: number[]): Promise<Sys_User | null> {
 
         try {
@@ -59,6 +60,7 @@ class SysUserRepo implements ISysUserRepo {
         }
     }
 
+    // add role user
     async addUserRoles(userId: number, roleIds: number[]): Promise<void> {
         let listRole: Sys_Role[] = [];
         try {
@@ -75,11 +77,13 @@ class SysUserRepo implements ISysUserRepo {
         }
     }
 
+    // search all user
     async retrieveAll(searchParams: { department_id: number; }): Promise<Sys_User[]> {
         throw new Error("Method not implemented.");
     }
 
-    async  retrieveById(userId: number): Promise<Sys_User | null> {
+    // tìm kiêm user theo id
+    async retrieveById(userId: number): Promise<Sys_User | null> {
         try {
             return await Sys_User.findByPk(userId, {include: ['sys_departments']});
         } catch (error) {
@@ -88,14 +92,17 @@ class SysUserRepo implements ISysUserRepo {
        
     }
 
+    // update user
     async update(user: Sys_User): Promise<number> {
         throw new Error("Method not implemented.");
     }
 
+    // thay đổi password
     async changePassword(newpass: string): Promise<number> {
         throw new Error("Method not implemented.");
     }
 
+    // khóa tài khoản. chuyển last time out = null
     async lockAccount(): Promise<number> {
         throw new Error("Method not implemented.");
     }
