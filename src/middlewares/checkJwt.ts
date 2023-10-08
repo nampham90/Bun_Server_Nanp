@@ -12,12 +12,18 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     try {
       jwtPayload = <any>jwt.verify(token, authConfig.jwtSecret!);
       res.locals.jwtPayload = jwtPayload;
+      res.locals.jwtPayload.lang = lang;
     } catch (error) {
       //If token is not valid, respond with 401 (unauthorized)
       res.status(401).send();
       return;
     }
-  
+    // check req
+    const { condition } = req.body
+    if (!condition ) {
+      return res.status(400).json({ error: 'Thiếu  trường conditione' });
+    }
+
     //The token is valid for 1 hour
     //We want to send a new token on every request
     const { userId, username } = jwtPayload;

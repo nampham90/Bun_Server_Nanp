@@ -13,7 +13,7 @@ class SysDepartmentRoutes {
     }
 
     intializeRoutes() {
-        this.router.post(Const.SysDepartmentCreate, this.sysDepartmentController.create);
+       // this.router.post(Const.SysDepartmentCreate, this.sysDepartmentController.create);
         this.router.post(Const.SysDepartmentFindAll, this.sysDepartmentController.findAll);
     }
 }

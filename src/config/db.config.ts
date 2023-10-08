@@ -1,8 +1,8 @@
 export const config = {
-    HOST: "localhost",
+    HOST: "nanp.bounceme.net",//nanp.bounceme.net//117.2.209.20
     PORT: "3306",
-    USER: "root",//root
-    PASSWORD: "@Root@123",//@Root@123
+    USER: "nanp",//root
+    PASSWORD: "@Nanp123@pass",//@Root@123
     DB: "testdb",
     pool: {
       max: 5,
