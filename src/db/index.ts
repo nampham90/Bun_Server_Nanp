@@ -6,6 +6,7 @@ import Sys_Role from "@models/system/sys_role.model";
 import Sys_Department from "@models/system/sys_department";
 import Sys_Permission from "@models/system/sys_permission";
 import Sys_Datasc from '@models/system/sys_datasc.model';
+import Sys_Datafile from "@models/system/sys_datafile.model";
 
 class Database {
     public sequelize: Sequelize | undefined;
@@ -34,7 +35,8 @@ class Database {
             Sys_Role,
             Sys_Department,
             Sys_Permission,
-            Sys_Datasc
+            Sys_Datasc,
+            Sys_Datafile
            ]
         });
         Sys_User.belongsToMany(Sys_Role, {
@@ -71,10 +73,16 @@ class Database {
 
         // 1 menu co nhieu datasc
         Sys_Permission.hasMany(Sys_Datasc, {as: "sys_datascs"})
-
         Sys_Datasc.belongsTo(Sys_Permission, {
             foreignKey: "permission_id",
             as: "sys_permissions",
+        })
+
+        // 1 user co nhieu file
+        Sys_User.hasMany(Sys_Datafile, {as: 'sys_datafiles'})
+        Sys_Datafile.belongsTo(Sys_User, {
+            foreignKey: "user_id",
+            as: "sys_users",
         })
         //-----------------------------------------------------
 
