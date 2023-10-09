@@ -5,6 +5,7 @@ import Sys_User from "@models/system/sys_user.model";
 import Sys_Role from "@models/system/sys_role.model";
 import Sys_Department from "@models/system/sys_department";
 import Sys_Permission from "@models/system/sys_permission";
+import Sys_Datasc from '@models/system/sys_datasc.model';
 
 class Database {
     public sequelize: Sequelize | undefined;
@@ -32,7 +33,8 @@ class Database {
             Sys_User,
             Sys_Role,
             Sys_Department,
-            Sys_Permission
+            Sys_Permission,
+            Sys_Datasc
            ]
         });
         Sys_User.belongsToMany(Sys_Role, {
@@ -66,6 +68,15 @@ class Database {
             foreignKey: "department_id",
             as: "sys_departments",
         })
+
+        // 1 menu co nhieu datasc
+        Sys_Permission.hasMany(Sys_Datasc, {as: "sys_datascs"})
+
+        Sys_Datasc.belongsTo(Sys_Permission, {
+            foreignKey: "permission_id",
+            as: "sys_permissions",
+        })
+        //-----------------------------------------------------
 
         //this.sequelize?.drop();
         await this.sequelize
