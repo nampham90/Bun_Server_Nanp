@@ -47,7 +47,7 @@ export default class Sys_Permission extends Model {
         type: DataType.STRING(200),
         field: "path"
     })
-    path?: number;
+    path?: string;
 
     @Column({
         type: DataType.CHAR(1),

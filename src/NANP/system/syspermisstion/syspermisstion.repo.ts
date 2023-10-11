@@ -53,12 +53,31 @@ class SysPermissionRepo implements ISysPermisstionRepo {
         }
        
     }
+
+    // upate menu
     async update(permesstion: Sys_Permission): Promise<number> {
-        throw new Error('Method not implemented.');
+        const {id, menu_name, code, father_id, order_num, path, menu_type, visible, status, is_new_link, al_icon, icon } = permesstion;
+        try {
+            const affectedRows = await Sys_Permission.update({menu_name,code,order_num,path,menu_type,visible,status,is_new_link,al_icon,icon}, {where: {id: id}});
+            return affectedRows[0];
+        } catch (error) {
+            throw new Error('Method not implemented.');
+        }
+       
     }
+
+    // delete menu
     async delete(permessionId: number): Promise<number> {
-        throw new Error('Method not implemented.');
+        try {
+            const affectedRows = await Sys_Permission.destroy({where: {id: permessionId}});
+            return affectedRows;
+        } catch (error) {
+            throw new Error('Method not implemented.');
+        }
+       
     }
+
+    // delete all
     async deleteAll(): Promise<number> {
         throw new Error('Method not implemented.');
     }

@@ -1,12 +1,15 @@
 import { Sequelize } from "sequelize-typescript";
 import { config, dialect } from "@config/db.config";
 import Tutorial from "../models/tutorial.model";
+// system
 import Sys_User from "@models/system/sys_user.model";
 import Sys_Role from "@models/system/sys_role.model";
 import Sys_Department from "@models/system/sys_department";
 import Sys_Permission from "@models/system/sys_permission";
 import Sys_Datasc from '@models/system/sys_datasc.model';
 import Sys_Datafile from "@models/system/sys_datafile.model";
+// master
+import Tmt020VideoYoutubes from "@models/master/tmt020_videoyoutube.model"
 
 class Database {
     public sequelize: Sequelize | undefined;
@@ -36,7 +39,10 @@ class Database {
             Sys_Department,
             Sys_Permission,
             Sys_Datasc,
-            Sys_Datafile
+            Sys_Datafile,
+
+            // tmt
+            Tmt020VideoYoutubes
            ]
         });
         Sys_User.belongsToMany(Sys_Role, {
