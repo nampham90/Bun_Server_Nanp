@@ -7,8 +7,9 @@ export default class SysDepartmentFindAllRequest extends AbstractRequest {
     constructor(req:Request,res: Response){
         super(req,res);
         this.department_name = "";
-        if(req.body.condition) {
-            this.department_name = req.body.condition.department_name;
+        const {filters} = req.body;
+        if(filters) {
+            this.department_name = filters.department_name;
         }
         
     }

@@ -20,8 +20,9 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
       return;
     }
     // check req
-    const { condition } = req.body
-    if (!condition ) {
+    
+    const { filters } = req.body
+    if (!filters ) {
       return res.status(200).send(Result.failureCode(ErrorEnum.SYS_ERR_FIELD_REQUEST));
     }
     //The token is valid for 1 hour

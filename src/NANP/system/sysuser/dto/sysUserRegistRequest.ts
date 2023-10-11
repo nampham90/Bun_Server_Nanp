@@ -22,14 +22,14 @@ export default class SysUserRegistRequest extends AbstractRequest {
     public ids: number[] = [];
     constructor(req: Request, res: Response) {
         super(req,res)
-        const {condition} = req.body;
-        if(condition) {
-            const validateUserRegist = this.validateRegist(condition);
+        const {filters} = req.body;
+        if(filters) {
+            const validateUserRegist = this.validateRegist(filters);
             if(validateUserRegist.error) {
                 this.sysUserValidate_Error = validateUserRegist.error.details[0].message;
             } else {
-                this.user = condition as Sys_User;// map user model
-                this.userDto = condition as UserDto; // map userDto
+                this.user = filters as Sys_User;// map user model
+                this.userDto = filters as UserDto; // map userDto
                 this.ids = this.userDto.ids; // get list role
                 this.department_id = this.userDto.department_id; // get department
             }

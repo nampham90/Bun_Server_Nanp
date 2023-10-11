@@ -13,13 +13,13 @@ export default class LoginRequest extends AbstractRequest {
     
     constructor(req: Request, res: Response) {
         super(req,res)
-        const {condition} = req.body;
-        if(condition) {
-            const validationResult = this.loginvalidate(condition);
+        const {filters} = req.body;
+        if(filters) {
+            const validationResult = this.loginvalidate(filters);
             if(validationResult.error) {
                 this.loginValidateError = validationResult.error.details[0].message;
             } else {
-                this.loginRequest = condition as LoginRequestDto;                
+                this.loginRequest = filters as LoginRequestDto;                
             } 
         } 
     }

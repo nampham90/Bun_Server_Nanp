@@ -5,7 +5,7 @@ export interface RequestDTO {
       pageNum: number;
       pageSize: number;
     };
-    condition: {
+    filters: {
        [key: string]: any
     };
 }

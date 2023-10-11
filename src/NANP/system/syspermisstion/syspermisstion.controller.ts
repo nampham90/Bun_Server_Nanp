@@ -10,6 +10,10 @@ export default class SysPermisstionController {
 
     }
 
+    async findFatherId(req: Request, res:Response) : Promise<void> {
+        
+    }
+
     async findById(req:Request, res: Response) : Promise<void> {
 
     }

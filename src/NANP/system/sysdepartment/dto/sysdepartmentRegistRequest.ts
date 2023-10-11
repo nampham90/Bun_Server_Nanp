@@ -17,16 +17,16 @@ export default class SysDepartmentRegistRequest extends AbstractRequest {
     public department!: Sys_Department;
     constructor(req: Request,res:Response) {
         super(req,res)
-        const {condition} = req.body;
+        const {filters} = req.body;
 
-        if(condition) {
-            const validationResult = this.validateDepartment(condition);
+        if(filters) {
+            const validationResult = this.validateDepartment(filters);
             if (validationResult.error) {
                 // Xử lý khi đối tượng không hợp lệ, ví dụ: gán lỗi vào department_nameError
                 this.department_Error = validationResult.error.details[0].message;
             } else {
-                // Đối tượng hợp lệ, gán giá trị từ condition vào các trường
-                const department: Sys_Department = condition as Sys_Department;
+                // Đối tượng hợp lệ, gán giá trị từ filters vào các trường
+                const department: Sys_Department = filters as Sys_Department;
                 this.department = department;
                 this.department.lang = this.lang;
             }

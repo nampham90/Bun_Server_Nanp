@@ -12,13 +12,13 @@ export default class SysUserFindByIdRequest extends AbstractRequest {
     constructor(req: Request, res: Response) {
          super(req, res)
 
-         const {condition} = req.body;
-         if(condition) {
-            const validateFindById = this.validateFindById(condition);
+         const {filters} = req.body;
+         if(filters) {
+            const validateFindById = this.validateFindById(filters);
             if(validateFindById.error) {
                 this.sysUserFindById_Error = validateFindById.error.details[0].message;
             } else {
-                this.sysUserFindbyIdRequestDto = condition as SysUserFindByIdRequestDto;
+                this.sysUserFindbyIdRequestDto = filters as SysUserFindByIdRequestDto;
             }
          }
     }

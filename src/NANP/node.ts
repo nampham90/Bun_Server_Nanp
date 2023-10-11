@@ -4,3 +4,12 @@
 // sysDatasc. quản lý dử liệu màn hình
 // sysPermission. quản lý menu 
 // sysRole . quản lý phân quyền
+// 
+
+// nhap hàng. 
+
+// xuat hang
+
+// di chuyển hàng
+
+// 
