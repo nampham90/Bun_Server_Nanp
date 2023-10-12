@@ -10,12 +10,15 @@ import Sys_Datasc from '@models/system/sys_datasc.model';
 import Sys_Datafile from "@models/system/sys_datafile.model";
 // master
 import Tmt020VideoYoutubes from "@models/master/tmt020_videoyoutube.model"
+import Logger from "@common/log/logtofile";
 
 class Database {
     public sequelize: Sequelize | undefined;
+    private logger: Logger
 
     constructor() {
         this.connectToDatabase();
+        this.logger = new Logger();
     }
 
     private async connectToDatabase() {
@@ -43,7 +46,10 @@ class Database {
 
             // tmt
             Tmt020VideoYoutubes
-           ]
+           ],
+           logging: (msg) => {
+               this.logger.logError(msg);
+           }
         });
         Sys_User.belongsToMany(Sys_Role, {
             through: "user_role",

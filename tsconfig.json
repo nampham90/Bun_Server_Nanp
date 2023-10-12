@@ -27,6 +27,7 @@
       "@nanp/*":["./src/NANP/*"],
       "@models/*":["./src/models/*"],
       "@middlewares/*":["./src/middlewares/*"],
+      "@log/*":["./src/LOG/errorLog"]
     }
   }
 }

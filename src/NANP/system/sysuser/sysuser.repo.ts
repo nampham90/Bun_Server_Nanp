@@ -1,3 +1,4 @@
+import Logger from "@common/log/logtofile";
 import { PageInfo } from "@common/pageHelper/PageInfo";
 import Sys_Department from "@models/system/sys_department";
 import Sys_Role from "@models/system/sys_role.model";
@@ -18,6 +19,11 @@ interface ISysUserRepo {
 }
 
 class SysUserRepo implements ISysUserRepo {
+    private logger: Logger;
+    
+    constructor() {
+        this.logger = new Logger();
+    }
 
     // đăng ký tài khoản
     async save(department_id: number,user: Sys_User,roleids: number[]): Promise<Sys_User | null> {
@@ -56,7 +62,7 @@ class SysUserRepo implements ISysUserRepo {
             })
 
         } catch (error) {
-            console.log(error);
+            this.logger.logError(error);
             throw new Error("Method not implemented.");
         }
     }
@@ -74,6 +80,7 @@ class SysUserRepo implements ISysUserRepo {
                await user.$add('sys_roles', listRole);
            }
         } catch (error) {
+            this.logger.logError(error);
             throw new Error("Method not implemented.");
         }
     }
@@ -85,15 +92,16 @@ class SysUserRepo implements ISysUserRepo {
             if(pageNum > 0) {
                  n = pageNum - 1;
             }
-            let condition :SearchCondition = {};
+            let condition :any = {};
             if(searchParams.department_id) {
                 condition.department_id = searchParams.department_id;
             }
-            const {rows, count} =  await Sys_User.findAndCountAll({where: {condition},limit: pageSize, offset: pageSize*n});
+            const {rows, count} =  await Sys_User.findAndCountAll({where: condition,limit: pageSize, offset: pageSize*n, attributes: {exclude: ['password']}});
             const pageInfo = new PageInfo(count, rows, pageNum, pageSize);
             return pageInfo;
         } catch (error) {
-            throw new Error("Method not implemented.");
+           this.logger.logError(error);
+           throw new Error("Method not implemented.");
         }
         
     }
@@ -103,6 +111,7 @@ class SysUserRepo implements ISysUserRepo {
         try {
             return await Sys_User.findByPk(userId, {include: ['sys_departments']});
         } catch (error) {
+            this.logger.logError(error);
             throw new Error("Method not implemented.");
         }
        

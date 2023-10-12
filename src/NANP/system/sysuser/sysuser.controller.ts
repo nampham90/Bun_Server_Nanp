@@ -12,6 +12,9 @@ export default class SysUserController {
     async findAll(req: Request, res: Response): Promise<Response> {
         const reqUserSearch = new SysUserFindAllRequest(req,res);
         try {
+            if(reqUserSearch.sysUserSearch_Error !== "") {
+                return res.status(200).send(Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, reqUserSearch.sysUserSearch_Error));
+            }
             const data = await sysuserRepo.retrieveAll(reqUserSearch.sysUserSearchDto,reqUserSearch.pageSize, reqUserSearch.pageNum);
             return res.status(200).send(Result.success(data));
         } catch (error) {
