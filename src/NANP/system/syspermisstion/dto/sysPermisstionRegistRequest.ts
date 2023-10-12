@@ -4,7 +4,8 @@ import { Request, Response} from "express";
 import Joi, {Schema} from 'joi';
 import Sys_Permission from '../../../../models/system/sys_permission';
 
-interface PremisstionDto {
+export interface PremisstionDto {
+    id?: number,
     menu_name: string;
     code: string;
     father_id:number;
@@ -31,6 +32,7 @@ export default class SysPremissionRegistRequest extends AbstractRequest {
                 this.sysPermissionRegist_Error = validatePermissionRegiste.error.details[0].message;
             } else {
                 this.permisstion = filters as Sys_Permission;
+                this.permisstion.lang = this.lang;
             }
 
         }
@@ -47,7 +49,7 @@ export default class SysPremissionRegistRequest extends AbstractRequest {
             visible: Joi.string().length(1).required(),
             status: Joi.string().length(1).required(),
             is_new_link: Joi.boolean().required(),
-            al_icon: Joi.string(),
+            al_icon:  Joi.string().allow('', null),
             icon: Joi.string().required()
 
         })

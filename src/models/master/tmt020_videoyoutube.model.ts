@@ -16,6 +16,7 @@ export default class Tmt020VideoYoutubes extends Model {
 
     @Column({
         type: DataType.STRING(3),
+        primaryKey: true,
         field: 'lang'
     })
     lang?: string

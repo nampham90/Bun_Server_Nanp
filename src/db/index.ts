@@ -90,8 +90,10 @@ class Database {
             foreignKey: "user_id",
             as: "sys_users",
         })
-        //-----------------------------------------------------
+        //----------------------table tmt-------------------------------
 
+        
+        //await Tmt020VideoYoutubes.drop();
         //this.sequelize?.drop();
         await this.sequelize
         .authenticate()

@@ -1,3 +1,4 @@
+import { PageInfo } from "@common/pageHelper/PageInfo";
 import Sys_Department from "@models/system/sys_department";
 import Sys_Role from "@models/system/sys_role.model";
 import Sys_User from "@models/system/sys_user.model";
@@ -9,7 +10,7 @@ interface SearchCondition {
 interface ISysUserRepo {
     save(department_id: number,user: Sys_User, roleIds: number[]) : Promise<Sys_User | null> ;
     addUserRoles(userId: number, roleIds: number[]): Promise<void> ;
-    retrieveAll(searchParams: {department_id: number}): Promise<Sys_User[]>;
+    retrieveAll(searchParams: SearchCondition, pageSize: number, pageNum: number): Promise<PageInfo<Sys_User>>;
     retrieveById(userId: number): Promise<Sys_User | null>;
     update(user: Sys_User): Promise<number>;
     changePassword(newpass:string) : Promise<number>;
@@ -78,8 +79,23 @@ class SysUserRepo implements ISysUserRepo {
     }
 
     // search all user
-    async retrieveAll(searchParams: { department_id: number; }): Promise<Sys_User[]> {
-        throw new Error("Method not implemented.");
+    async retrieveAll(searchParams: SearchCondition, pageSize: number , pageNum: number): Promise<PageInfo<Sys_User>> {
+        try {
+            let n = 0; 
+            if(pageNum > 0) {
+                 n = pageNum - 1;
+            }
+            let condition :SearchCondition = {};
+            if(searchParams.department_id) {
+                condition.department_id = searchParams.department_id;
+            }
+            const {rows, count} =  await Sys_User.findAndCountAll({where: {condition},limit: pageSize, offset: pageSize*n});
+            const pageInfo = new PageInfo(count, rows, pageNum, pageSize);
+            return pageInfo;
+        } catch (error) {
+            throw new Error("Method not implemented.");
+        }
+        
     }
 
     // tìm kiêm user theo id
