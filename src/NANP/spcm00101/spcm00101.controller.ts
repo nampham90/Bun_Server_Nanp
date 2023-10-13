@@ -7,6 +7,8 @@ import LoginRequest from "@nanp/spcm00101/dto/loginRequest";
 import spcm00101Repo from './spcm00101.repo';
 import {authConfig} from '@config/auth.config';
 import * as jwt from 'jsonwebtoken';
+import Sys_User from '@models/system/sys_user.model';
+import Sys_Role from '@models/system/sys_role.model';
 export default class Spmt00101Controller {
    async login(req:Request, res: Response) :Promise<Response>{
       const reqLogin = new LoginRequest(req,res);
@@ -14,20 +16,30 @@ export default class Spmt00101Controller {
          if(reqLogin.loginValidateError !== "") {
             return res.status(200).send(Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, reqLogin.loginValidateError));
          }
-         let user = await spcm00101Repo.login(reqLogin.loginRequest);
-         if(user) {
-            const {id, user_name,} = user;
+         let kq = await spcm00101Repo.login(reqLogin.loginRequest);
+   
+         if(kq instanceof Sys_User) {
+            let listRole: Sys_Role[] = kq.dataValues.sys_roles as Sys_Role[];
+            let listRoleId :number[] = [];
+            if(listRole.length > 0) {
+               listRole.forEach(role=> {
+                  listRoleId.push(role.id!);
+               })
+            }
+            const {id, user_name} = kq;
+            const strCode = await spcm00101Repo.roleOfPermisstion(id!);
             const payload = {
                userId: id,
                username: user_name,
-               role: 'user',
-             };
-            const newToken = jwt.sign(payload, authConfig.jwtSecret! , {expiresIn: '10h',});
+               roles: listRoleId,
+               permission: strCode,
+            };
+            const newToken = jwt.sign(payload, authConfig.jwtSecret! , {expiresIn: '1000h',});
             return res.status(200).send(Result.success(newToken));
          } else {
-            return res.status(200).send(Result.failureCode(ErrorEnum.SPCM00101_ERR_LOGIN));
+            if(kq == 1) return res.status(200).send(Result.failureCode(ErrorEnum.SPCM00101_ERR_EMAIL_LOGIN));
+            return res.status(200).send(Result.failureCode(ErrorEnum.SPCM00101_ERR_PASS_LOGIN));
          }
-         
       } catch (error) {
          return res.status(200).send(Result.failureCode(ErrorEnum.SYS_ERR_GLOBAL));
       }

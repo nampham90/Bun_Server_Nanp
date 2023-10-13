@@ -14,7 +14,9 @@ export const ErrorEnum = {
     SYS_ERR_CODE: [1103, "Code không hơp lệ !"],
 
     //spcm00101
-    SPCM00101_ERR_LOGIN: [1200, "Email hoặc mật khẩu khâu đúng !"]
+    SPCM00101_ERR_EMAIL_LOGIN: [1200, "Email chưa đăng ký !"],
+    SPCM00101_ERR_PASS_LOGIN: [1201, " Mật khẩu không đúng !"],
+
 }
 
 

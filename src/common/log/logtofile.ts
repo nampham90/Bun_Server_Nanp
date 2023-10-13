@@ -19,9 +19,11 @@ export default class Logger{
         const formattedTime = format(currentTime, 'dd-MM-yyyy HH:mm:ss');
         const logMessage = `${formattedTime} - : ${message}\n`;
         const file = Bun.file(this.logFilePath);
-        const curentMsg = await file.text();
+        const curentMsg = await file.stream();
+        const stream = new ReadableStream();
+        const str = await Bun.readableStreamToText(curentMsg);
         const writer = file.writer();
-        writer.write(curentMsg+logMessage);
+        writer.write(str+logMessage);
         writer.flush();
     }
 }

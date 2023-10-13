@@ -31,7 +31,7 @@ class SysUserRepo implements ISysUserRepo {
         try {
             const u = await Sys_User.create({
                 user_name: user.user_name,
-                password: await Bun.password.hash(user.password!),
+                password: await Bun.password.hash(user.password!,{algorithm: "bcrypt", cost: 4}),
                 is_available: user.is_available,
                 sex: user.sex,
                 mobile: user.mobile,
