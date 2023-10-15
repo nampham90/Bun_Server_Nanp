@@ -28,7 +28,8 @@
       "@models/*":["./src/models/*"],
       "@middlewares/*":["./src/middlewares/*"],
       "@log/*":["./src/LOG/errorLog"],
-      "@db/*":["./src/db/*"]
+      "@db/*":["./src/db/*"],
+      "@db":["./src/db"]
     }
   }
 }

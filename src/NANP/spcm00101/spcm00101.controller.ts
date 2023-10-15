@@ -9,12 +9,14 @@ import {authConfig} from '@config/auth.config';
 import * as jwt from 'jsonwebtoken';
 import Sys_User from '@models/system/sys_user.model';
 import Sys_Role from '@models/system/sys_role.model';
-export default class Spmt00101Controller {
-   async login(req:Request, res: Response) :Promise<Response>{
-      const reqLogin = new LoginRequest(req,res);
-      try {
-         if(reqLogin.loginValidateError !== "") {
-            return res.status(200).send(Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, reqLogin.loginValidateError));
+import AbstractController from '@common/abstract/AbstractController';
+type T = string;
+export default class Spmt00101Controller extends AbstractController<T>{
+   async login(req:Request, res: Response) {
+      await super.execute(res, async () => {
+         const reqLogin = new LoginRequest(req,res);
+             if(reqLogin.loginValidateError !== "") {
+            return Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, reqLogin.loginValidateError)
          }
          let kq = await spcm00101Repo.login(reqLogin.loginRequest);
    
@@ -35,13 +37,11 @@ export default class Spmt00101Controller {
                permission: strCode,
             };
             const newToken = jwt.sign(payload, authConfig.jwtSecret! , {expiresIn: '1000h',});
-            return res.status(200).send(Result.success(newToken));
+            return Result.success(newToken);
          } else {
-            if(kq == 1) return res.status(200).send(Result.failureCode(ErrorEnum.SPCM00101_ERR_EMAIL_LOGIN));
-            return res.status(200).send(Result.failureCode(ErrorEnum.SPCM00101_ERR_PASS_LOGIN));
+            if(kq === 1) return Result.failureCode(ErrorEnum.SPCM00101_ERR_EMAIL_LOGIN);
+            return Result.failureCode(ErrorEnum.SPCM00101_ERR_PASS_LOGIN);
          }
-      } catch (error) {
-         return res.status(200).send(Result.failureCode(ErrorEnum.SYS_ERR_GLOBAL));
-      }
+      })
    }
 }

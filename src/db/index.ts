@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
 import { config, dialect } from "@config/db.config";
-import Tutorial from "../models/tutorial.model";
 // system
 import Sys_User from "@models/system/sys_user.model";
 import Sys_Role from "@models/system/sys_role.model";
@@ -36,7 +35,6 @@ class Database {
               idle: config.pool.idle
             },
            models: [
-            Tutorial,
             Sys_User,
             Sys_Role,
             Sys_Department,
@@ -64,13 +62,13 @@ class Database {
         })
 
         Sys_Role.belongsToMany(Sys_Permission,{
-            through: "role_premisstion",
-            as: "sys_permisstions",
+            through: "role_permission",
+            as: "sys_permissions",
             foreignKey: "role_id",
         })
 
         Sys_Permission.belongsToMany(Sys_Role, {
-            through: "role_premisstion",
+            through: "role_permission",
             as: "sys_roles",
             foreignKey: "permission_id",
         })
@@ -101,10 +99,11 @@ class Database {
         
         //await Tmt020VideoYoutubes.drop();
         //this.sequelize?.drop();
+        //await Sys_Datasc.drop();
         await this.sequelize
         .authenticate()
         .then(() => {
-          console.log("Connection has been established successfully.");
+          //console.log("Connection has been established successfully.");
         })
         .catch((err) => {
           console.error("Unable to connect to the Database:", err);

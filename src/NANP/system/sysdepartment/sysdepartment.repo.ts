@@ -32,15 +32,11 @@ class SysDepartmentRepo implements ISysDepartmentRepo {
     async retrieveAll(searchParams: { department_name: string, pageSize: number, pageNum: number}): Promise<PageInfo<Sys_Department>>{
         let pageSize = 0;
         let pageNum = 0;
-        let n = 0
         try {
             let condition: SearchCondition = {}
             if(searchParams?.pageSize) pageSize = searchParams.pageSize;
             if(searchParams?.pageNum){
                 pageNum = searchParams.pageNum;
-                if(pageNum > 0) {
-                    n = pageNum - 1;
-                }
             } 
             const result = await Sys_Department.findOne({
                 attributes: [
@@ -50,7 +46,7 @@ class SysDepartmentRepo implements ISysDepartmentRepo {
             let totalRows = result?.dataValues.cnt;
             if(searchParams?.department_name)
             condition.department_name = { [Op.like]: `%${searchParams.department_name}%` };
-            let data = await Sys_Department.findAll({where: condition,limit: pageSize, offset:pageSize*n});
+            let data = await Sys_Department.findAll({where: condition,limit: pageSize, offset:(pageNum - 1)*pageSize});
             let pageInfo = new PageInfo(totalRows,data,pageNum,pageSize);
             return pageInfo;
         } catch (error) {

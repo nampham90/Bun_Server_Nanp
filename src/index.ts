@@ -40,7 +40,7 @@ export default class Server {
 
     private syncDatabase(): void {
         const db = new Database();
-        db.sequelize?.sync();
+        db.sequelize?.sync({ alter: true });
     }
 
     start(port: number): void {

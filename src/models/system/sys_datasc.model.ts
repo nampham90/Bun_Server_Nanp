@@ -29,7 +29,13 @@ export default class Sys_Datasc extends Model {
         type: DataType.STRING(255),
         field: "title2"
     })
-    title2?: number;
+    title2?: string;
+
+    @Column({
+        type: DataType.INTEGER,
+        field: "location"
+    })
+    location?: number;
 
 
     @Column({

@@ -17,6 +17,11 @@ export const ErrorEnum = {
     SPCM00101_ERR_EMAIL_LOGIN: [1200, "Email chưa đăng ký !"],
     SPCM00101_ERR_PASS_LOGIN: [1201, " Mật khẩu không đúng !"],
 
+    
+    // sys_role msg
+    SYS_ROLE_ERR_NONE: [1300,"Role không tồn tại !"],
+
+
 }
 
 
