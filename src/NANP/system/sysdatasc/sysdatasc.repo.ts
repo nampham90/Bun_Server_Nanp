@@ -53,16 +53,24 @@ class SysDatascRepo extends AbstractRepository<T> implements ISysDatascRepo<T> {
         })
     }
 
-    retrieveById(datascId: number, lang: string): Promise<Sys_Datasc | null> {
-        throw new Error("Method not implemented.");
+    async retrieveById(datascId: number, lang: string): Promise<T> {
+        return await super.execute(async () => {
+            return await Sys_Datasc.findOne({where: {id: datascId,lang: lang}});
+        })
     }
 
-    update(datasc: Sys_Datasc, lang: string): Promise<number> {
-        throw new Error("Method not implemented.");
+    async update(datasc: Sys_Datasc, lang: string): Promise<T> {
+        return await super.execute(async () => {
+            const { id, title1, title2, location, status} = datasc;
+            const updateOne = await Sys_Datasc.update({title1,title2,location,status}, {where:{id: id,lang: lang}}); 
+            return updateOne[0];
+        })
     }
 
-    delete(datascId: number, lang: string): Promise<number> {
-        throw new Error("Method not implemented.");
+    async delete(datascId: number, lang: string): Promise<T> {
+        return await super.execute(async () => {
+            return await Sys_Datasc.destroy({where : {id: datascId, lang: lang}});
+        })
     }
 
 }

@@ -1,5 +1,5 @@
 import {Request,Response} from "express";
-import AbstractRequest from '../../../../common/abstract/AbstractRequest';
+import AbstractRequest from '@common/abstract/AbstractRequest'
 import Joi, {Schema} from 'joi';
 
 export default class SysDatascFindByIdPermissionRequest extends AbstractRequest {

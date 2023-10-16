@@ -1,8 +1,9 @@
 import  Joi, {Schema} from 'joi';
 import {Request, Response} from "express"
-import AbstractRequest from '../../../../common/abstract/AbstractRequest';
+import AbstractRequest from '@common/abstract/AbstractRequest'
 import Sys_Datasc from '../../../../models/system/sys_datasc.model';
 export interface DataScDto {
+    id?:number,
     lang: string,
     title1: string;
     title2: string;

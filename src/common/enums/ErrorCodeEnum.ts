@@ -21,6 +21,9 @@ export const ErrorEnum = {
     // sys_role msg
     SYS_ROLE_ERR_NONE: [1300,"Role không tồn tại !"],
 
+    // sys_datasc_msg
+    SYS_DATASC_ERR_NOID: [1400, 'ID không tồn tại !'],
+
 
 }
 

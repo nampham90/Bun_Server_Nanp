@@ -5,9 +5,11 @@ import AbstractController from '../../../common/abstract/AbstractController';
 import Sys_Datasc from '@models/system/sys_datasc.model';
 import SysDatascRegistListRequest from './dto/sysdatascRegistListRequest';
 import { Result } from '@common/result/Result';
-import { ErrorEnum } from '@common/enums/ErrorCodeEnum';
+import { ErrorEnum, ErrorCodeEnum } from '@common/enums/ErrorCodeEnum';
 import { PageInfo } from '@common/pageHelper/PageInfo';
 import SysDatascFindByIdPermissionRequest from './dto/sysdatascFindByIdPermissionRequest';
+import SysDatascFindByIdRequest from './dto/sysdatascFindByIdRequest';
+import SysDatascUpdateRequest from './dto/sysdatascUpdateRequest';
 
 type T = Sys_Datasc[] | Sys_Datasc | null | number | PageInfo<Sys_Datasc>
 export default class SysDatascController extends AbstractController<T> {
@@ -36,7 +38,29 @@ export default class SysDatascController extends AbstractController<T> {
         })
 
     }
-    async findById(req:Request, res:Response) {}
-    async update(req:Request, res:Response) {}
+    async findById(req:Request, res:Response) {
+        await super.execute(res, async () => {
+            const reqsysdatascFindById = new SysDatascFindByIdRequest(req,res);
+            if(reqsysdatascFindById.sysdatascFindById_Error !== "") 
+                return Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, reqsysdatascFindById.sysdatascFindById_Error);
+            const datasc = await sysdatascRepo.retrieveById(reqsysdatascFindById.datascId, reqsysdatascFindById.lang);
+            return Result.success(datasc);
+        })
+    }
+    async update(req:Request, res:Response) {
+        await super.execute(res, async () => {
+            const reqSysDatscUpdate = new SysDatascUpdateRequest(req,res);
+            const checkId = await reqSysDatscUpdate.checkIdUpdate(reqSysDatscUpdate.sysDatasc.id!);
+            if(!checkId) {
+                const errorEnum = new ErrorCodeEnum(ErrorEnum.SYS_DATASC_ERR_NOID);
+                reqSysDatscUpdate.sysDatascUpdate_Error = errorEnum.getMsg();
+            }
+            console.log(reqSysDatscUpdate.sysDatascUpdate_Error);
+            if(reqSysDatscUpdate.sysDatascUpdate_Error !== "") 
+               return Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, reqSysDatscUpdate.sysDatascUpdate_Error);
+            const upateOne = await sysdatascRepo.update(reqSysDatscUpdate.sysDatasc,reqSysDatscUpdate.lang);
+            return Result.success(upateOne);
+        })
+    }
     async delete(req:Request, res:Response) {}
 }
