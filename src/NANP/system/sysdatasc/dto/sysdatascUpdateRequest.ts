@@ -21,17 +21,6 @@ export default class SysDatascUpdateRequest extends AbstractRequest {
         }
     }
 
-    public async checkIdUpdate(idUpdate: number): Promise<boolean> {
-        try {
-            const datasc = await sysdatascRepo.retrieveById(idUpdate,super.lang);
-            console.log(datasc)
-            if(datasc) return true;
-            return false;
-        } catch (error) {
-            return false;
-        }
-    }
-
     private validateUpdate(reqDto: DataScDto) : Joi.ValidationResult{
         const scheam: Schema = Joi.object({
             id: Joi.number().integer().required(),

@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 export default class AbstractController<T>{
     public logger!: Logger;
     constructor(){
-        this.logger = new Logger();
+       
     }
     // thực thi process
     protected async execute(res: Response, callback:  () => Promise<Result<T>>) {
@@ -14,6 +14,7 @@ export default class AbstractController<T>{
             const result = await callback();
             return  res.status(200).send(result);
         } catch (error) {
+            this.logger = new Logger();
             this.logger.logError(error);
             return res.status(200).send(Result.failureCode(ErrorEnum.SYS_ERR_GLOBAL));
         }

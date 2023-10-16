@@ -50,17 +50,32 @@ export default class SysDatascController extends AbstractController<T> {
     async update(req:Request, res:Response) {
         await super.execute(res, async () => {
             const reqSysDatscUpdate = new SysDatascUpdateRequest(req,res);
-            const checkId = await reqSysDatscUpdate.checkIdUpdate(reqSysDatscUpdate.sysDatasc.id!);
-            if(!checkId) {
-                const errorEnum = new ErrorCodeEnum(ErrorEnum.SYS_DATASC_ERR_NOID);
-                reqSysDatscUpdate.sysDatascUpdate_Error = errorEnum.getMsg();
-            }
-            console.log(reqSysDatscUpdate.sysDatascUpdate_Error);
+
             if(reqSysDatscUpdate.sysDatascUpdate_Error !== "") 
                return Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, reqSysDatscUpdate.sysDatascUpdate_Error);
+            const checkId = await sysdatascRepo.retrieveById(reqSysDatscUpdate.sysDatasc.id!,reqSysDatscUpdate.lang);
+            if(!checkId) {
+                const errorEnum = new ErrorCodeEnum(ErrorEnum.SYS_DATASC_ERR_NOID);
+                return Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, errorEnum.getMsg());
+            } 
             const upateOne = await sysdatascRepo.update(reqSysDatscUpdate.sysDatasc,reqSysDatscUpdate.lang);
             return Result.success(upateOne);
         })
     }
-    async delete(req:Request, res:Response) {}
+    async delete(req:Request, res:Response) {
+        await super.execute(res, async () => {
+            const reqSysDatascDelete = new SysDatascFindByIdRequest(req,res);
+            if(reqSysDatascDelete.sysdatascFindById_Error !== "") 
+               return Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, reqSysDatascDelete.sysdatascFindById_Error);
+            const checkId = await sysdatascRepo.retrieveById(reqSysDatascDelete.datascId,reqSysDatascDelete.lang);
+            if(!checkId) {
+                const errorEnum = new ErrorCodeEnum(ErrorEnum.SYS_DATASC_ERR_NOID);
+                return Result.failureCodeRelease(ErrorEnum.SYS_ERR_VALIDATE, errorEnum.getMsg());
+            }
+            const delteOne = await sysdatascRepo.delete(reqSysDatascDelete.datascId,reqSysDatascDelete.lang);
+            return Result.success(delteOne);
+
+        })
+
+    }
 }

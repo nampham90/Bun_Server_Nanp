@@ -44,6 +44,13 @@ class SysDatascRepo extends AbstractRepository<T> implements ISysDatascRepo<T> {
         })
     }
 
+    // {
+    //     "pageNum": 1,
+    //     "pageSize": 10,
+    //     "filters": {
+    //       "permission_id": 40
+    //     }
+    // }
     //search theo menu
     async retrieveAll(permissionId: number,lang: string, pageNum: number, pageSize: number): Promise<T> {
         return await super.execute(async () => {
@@ -53,12 +60,23 @@ class SysDatascRepo extends AbstractRepository<T> implements ISysDatascRepo<T> {
         })
     }
 
+    // "filters": {
+    //     "datascId": 2
+    // }
+
     async retrieveById(datascId: number, lang: string): Promise<T> {
         return await super.execute(async () => {
             return await Sys_Datasc.findOne({where: {id: datascId,lang: lang}});
         })
     }
 
+    // "filters": {
+    //     "datascId": 2,
+    //     "title1": "Trang chủ",
+    //     "title2": "Trang chủ",
+    //     "location": 1,
+    //     "status": true
+    //}
     async update(datasc: Sys_Datasc, lang: string): Promise<T> {
         return await super.execute(async () => {
             const { id, title1, title2, location, status} = datasc;
@@ -66,6 +84,10 @@ class SysDatascRepo extends AbstractRepository<T> implements ISysDatascRepo<T> {
             return updateOne[0];
         })
     }
+
+    // "filters": {
+    //     "datascId": 2,
+    //  }
 
     async delete(datascId: number, lang: string): Promise<T> {
         return await super.execute(async () => {
