@@ -1,3 +1,63 @@
+import { Model, Table, Column, DataType } from "sequelize-typescript";
+
+@Table({
+    tableName: 'tmt090_products'
+})
+export default class Tmt090Product extends Model {
+    @Column({
+        type: DataType.STRING(6),
+        primaryKey: true,
+        field: 'itemcd',
+        validate: {
+          isAlphanumeric: true, // Kiểm tra rằng giá trị là ký tự chữ và số
+        },
+    })
+    itemcd?: string;// mã sản phẩm
+
+    @Column({
+        type: DataType.STRING(3),
+        primaryKey: true,
+        field: 'lang'
+    })
+    lang?: string
+
+    @Column({
+        type: DataType.STRING(100),
+        field: 'itemnm'
+    })
+    itemnm?: string  // tên sản phẩm
+
+    @Column({
+        type: DataType.STRING(255),
+        field: 'description'/// mo tả sản phẩm
+    })
+    description?: string
+
+    @Column({
+        type: DataType.DECIMAL(10, 2),
+        field: 'price'
+    })
+    price?: number /// giá
+
+    @Column({
+        type: DataType.INTEGER,
+        field: 'stock'
+    })
+    stock?: number // tồn kho
+
+    @Column({
+        type: DataType.BOOLEAN,
+        field: 'is_composite'
+    })
+    is_composite?: boolean;// đanh dâu sảng phẩm gộp
+
+    @Column({
+        type: DataType.STRING(255),
+        field: 'image'
+    })
+    image?: string
+}
+
 // class Product extends Model {}
 // Product.init({
 //   id: {

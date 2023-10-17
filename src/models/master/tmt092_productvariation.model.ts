@@ -1,3 +1,51 @@
+import { Model, Table, Column, DataType } from "sequelize-typescript";
+
+
+
+@Table({
+    tableName: 'tmt092_productvariations'
+})
+export default class Tmt091ProdcutVariation extends Model {
+    @Column({
+        type: DataType.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        field: 'id'
+    })
+    id?: number;
+
+    @Column({
+        type: DataType.STRING(3),
+        primaryKey: true,
+        field: 'lang'
+    })
+    lang?: string
+
+    @Column({
+        type: DataType.STRING(100),
+        primaryKey: true,
+        field: 'name'
+    })
+    name?: string
+
+    @Column({
+        type: DataType.DECIMAL(10, 2),
+        field: 'price'
+    })
+    price?: number /// giá
+
+    @Column({
+        type: DataType.INTEGER,
+        field: 'stock'
+    })
+    stock?: number // tồn kho
+
+    @Column({
+        type: DataType.STRING(255),
+        field: 'image'
+    })
+    image?: string
+}
 // class ProductVariation extends Model {}
 // ProductVariation.init({
 //   id: {

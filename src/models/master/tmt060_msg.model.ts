@@ -1,11 +1,9 @@
 import { Model, Table, Column, DataType } from "sequelize-typescript";
 
-
-
 @Table({
-    tableName: 'tmt091_productcategorys'
+    tableName: 'tmt060_msgs'
 })
-export default class Tmt091ProdcutCategory extends Model {
+export default class Tmt060Msg extends Model {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,
@@ -22,16 +20,14 @@ export default class Tmt091ProdcutCategory extends Model {
     lang?: string
 
     @Column({
-        type: DataType.STRING(100),
-        primaryKey: true,
-        field: 'name'
+        type: DataType.STRING(4),
+        field: 'code'
     })
-    name?: string
+    code?: string
 
     @Column({
-        type: DataType.STRING,
-        field: 'description'
+        type: DataType.STRING(255),
+        field: 'msg'
     })
-    description?: string
-
+    msg?: string
 }

@@ -67,16 +67,11 @@ class Spcm00101LoginRepo extends AbstractRepository<T> implements ISpcm00101Repo
         type: QueryTypes.SELECT
       });
       let strCode = ""
-      if(data) {
+      const listcode = data as Code[];
+      if(listcode.length > 0) {
         let i = 0;
-        data.forEach(data => {
-          const code:Code = data as Code;
-          let dauphay = "";
-          if(i > 0) {
-              dauphay = ","
-          }
-          strCode = strCode + dauphay + code.code ;
-          i++
+        listcode.forEach(data => {
+          strCode = listcode.map(data => (data as Code).code).join(",");
         })
       }
       return strCode;

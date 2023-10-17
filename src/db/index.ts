@@ -10,6 +10,9 @@ import Sys_Datafile from "@models/system/sys_datafile.model";
 // master
 import Tmt020VideoYoutubes from "@models/master/tmt020_videoyoutube.model"
 import Logger from "@common/log/logtofile";
+import Tmt060Msg from "@models/master/tmt060_msg.model";
+import Tmt091ProdcutCategory from "@models/master/tmt091_productcategory.model";
+import Tmt090Product from "@models/master/tmt090_product.model";
 
 class Database {
     public sequelize: Sequelize | undefined;
@@ -43,12 +46,26 @@ class Database {
             Sys_Datafile,
 
             // tmt
-            Tmt020VideoYoutubes
+            Tmt060Msg,
+            Tmt020VideoYoutubes,
+            Tmt090Product,
+            Tmt091ProdcutCategory,
+            // martes san phâm
+
            ],
            logging: (msg) => {
                this.logger.logError(msg);
            }
         });
+        // 1 danh mục có nhiều sản phẩm
+        Tmt091ProdcutCategory.hasMany(Tmt090Product, {as: 'tmt090_prodcuts'});
+        Tmt090Product.belongsTo(Tmt091ProdcutCategory, {
+            foreignKey: "category_id",
+            as: "tmt091_productcategorys",
+            targetKey: 'lang'
+        })
+
+
         Sys_User.belongsToMany(Sys_Role, {
             through: "user_role",
             as: "sys_roles",
@@ -86,6 +103,7 @@ class Database {
         Sys_Datasc.belongsTo(Sys_Permission, {
             foreignKey: "permission_id",
             as: "sys_permissions",
+            targetKey: 'lang'
         })
 
         // 1 user co nhieu file
@@ -99,7 +117,7 @@ class Database {
         
         //await Tmt020VideoYoutubes.drop();
         //this.sequelize?.drop();
-        //await Sys_Datasc.drop();
+       // await Sys_Datasc.drop();
         await this.sequelize
         .authenticate()
         .then(() => {
