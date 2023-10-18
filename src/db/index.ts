@@ -51,6 +51,8 @@ class Database {
             // tmt
             Tmt060Msg,
             Tmt020VideoYoutubes,
+            
+            // master product
             Tmt090Product,
             Tmt091ProdcutCategory,
             Tmt092ProdcutVariation,
