@@ -23,7 +23,6 @@ export default class Tmt091ProdcutCategory extends Model {
 
     @Column({
         type: DataType.STRING(100),
-        primaryKey: true,
         field: 'name'
     })
     name?: string

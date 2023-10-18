@@ -5,7 +5,7 @@ import { Model, Table, Column, DataType } from "sequelize-typescript";
 @Table({
     tableName: 'tmt092_productvariations'
 })
-export default class Tmt091ProdcutVariation extends Model {
+export default class Tmt092ProdcutVariation extends Model {
     @Column({
         type: DataType.INTEGER,
         primaryKey: true,

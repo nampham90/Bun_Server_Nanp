@@ -1,4 +1,5 @@
-import { Model, Table, Column, DataType } from "sequelize-typescript";
+import { Model, Table, Column, DataType, BelongsTo } from "sequelize-typescript";
+
 
 @Table({
     tableName: 'tmt090_products'
@@ -20,6 +21,7 @@ export default class Tmt090Product extends Model {
         field: 'lang'
     })
     lang?: string
+
 
     @Column({
         type: DataType.STRING(100),

@@ -13,6 +13,9 @@ import Logger from "@common/log/logtofile";
 import Tmt060Msg from "@models/master/tmt060_msg.model";
 import Tmt091ProdcutCategory from "@models/master/tmt091_productcategory.model";
 import Tmt090Product from "@models/master/tmt090_product.model";
+import Tmt094ProdcutColor from "@models/master/tmt094_productcolor.model";
+import Tmt093ProdcutSize from "@models/master/tmt093_productsize.model";
+import Tmt092ProdcutVariation from "@models/master/tmt092_productvariation.model";
 
 class Database {
     public sequelize: Sequelize | undefined;
@@ -50,6 +53,9 @@ class Database {
             Tmt020VideoYoutubes,
             Tmt090Product,
             Tmt091ProdcutCategory,
+            Tmt092ProdcutVariation,
+            Tmt093ProdcutSize,
+            Tmt094ProdcutColor,
             // martes san phâm
 
            ],
@@ -57,8 +63,20 @@ class Database {
                this.logger.logError(msg);
            }
         });
+        // quan hệ nhiều variation vơi color
+        Tmt092ProdcutVariation.belongsToMany(Tmt093ProdcutSize, { through: 'VariationSize', as: 'tmt093_productsizes', foreignKey: 'variation_id' });
+        Tmt093ProdcutSize.belongsToMany(Tmt092ProdcutVariation, { through: 'VariationSize',as: 'tmt092_productvariations', foreignKey: 'size_id' });
+
+        // quan hệ nhiêu varialtion vơi size
+        Tmt092ProdcutVariation.belongsToMany(Tmt094ProdcutColor, { through: 'VariationColor',as: 'tmt094_productcolors', foreignKey: 'variation_id' });
+        Tmt094ProdcutColor.belongsToMany(Tmt092ProdcutVariation, { through: 'VariationColor', as: 'tmt092_productvariations', foreignKey: 'color_id' });
+
+        // 1 sản phảm có nhiều bến thể
+        Tmt090Product.hasMany(Tmt092ProdcutVariation, { as: 'tmt092_productvariations' });
+        Tmt092ProdcutVariation.belongsTo(Tmt090Product, { foreignKey: 'product_id', as: "tmt091_productcategorys", targetKey: 'lang'});
+
         // 1 danh mục có nhiều sản phẩm
-        Tmt091ProdcutCategory.hasMany(Tmt090Product, {as: 'tmt090_prodcuts'});
+        Tmt091ProdcutCategory.hasMany(Tmt090Product, {as: 'tmt090_products'});
         Tmt090Product.belongsTo(Tmt091ProdcutCategory, {
             foreignKey: "category_id",
             as: "tmt091_productcategorys",
@@ -118,6 +136,9 @@ class Database {
         //await Tmt020VideoYoutubes.drop();
         //this.sequelize?.drop();
        // await Sys_Datasc.drop();
+      // await Tmt091ProdcutSize.drop()
+      // await Tmt091ProdcutColor.drop()
+         
         await this.sequelize
         .authenticate()
         .then(() => {
@@ -126,6 +147,9 @@ class Database {
         .catch((err) => {
           console.error("Unable to connect to the Database:", err);
         });
+
+
+        //console.log(products);
     }
 }
 
