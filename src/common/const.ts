@@ -43,3 +43,6 @@ export const SysDataScAddList = '/ant100AddListDatasc';
 export const SysDataScDelete = '/ant100DelDatasc';
 export const SysDataScUpdate= '/ant100EditDatasc';
 
+// route master sanpham
+export const Spmt00900FindByItemcd = '/spmt00900FindByItemcd'
+

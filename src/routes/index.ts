@@ -5,6 +5,8 @@ import sysdepartmentRoutes from '@nanp/system/sysdepartment/sysdepartment.routes
 import SysPermissionRoutes from '@nanp/system/syspermisstion/syspermisstion.routes'
 import sysroleRoutes from '@nanp/system/sysrole/sysrole.routes';
 import sysdatascRoutes from '@nanp/system/sysdatasc/sysdatasc.routes';
+import spmt00900Routes from '@nanp/spmt00900/spmt00900.routes';
+
 
 export default class Routes {
     constructor(app:Application) {
@@ -26,7 +28,10 @@ export default class Routes {
         // // route Sys DataSc
         app.use("/api/screenpc", sysdatascRoutes);
 
-        // router child prodcut
+
+        // router master san pham
+        // spmt00900
+        app.use("/api/product", spmt00900Routes)
 
 
     }

@@ -25,9 +25,9 @@ export default class Logger{
         } else {
            const curentMsg = await file.stream();
            const str = await Bun.readableStreamToText(curentMsg);
-           const writer = file.writer();
+           const writer = await file.writer();
            writer.write(str+logMessage);
-           writer.flush();
+           await writer.flush();
         }
        
     }

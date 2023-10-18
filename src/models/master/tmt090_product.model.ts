@@ -1,11 +1,12 @@
-import { Model, Table, Column, DataType } from "sequelize-typescript";
+import { Model, Table, Column, DataType, BelongsTo } from "sequelize-typescript";
+
 
 @Table({
     tableName: 'tmt090_products'
 })
 export default class Tmt090Product extends Model {
     @Column({
-        type: DataType.STRING(6),
+        type: DataType.STRING(10),// 2 chu cai dau cua san pham + ngay nhap hang vd PA20231018
         primaryKey: true,
         field: 'itemcd',
         validate: {
@@ -20,6 +21,7 @@ export default class Tmt090Product extends Model {
         field: 'lang'
     })
     lang?: string
+
 
     @Column({
         type: DataType.STRING(100),

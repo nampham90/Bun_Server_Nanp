@@ -24,6 +24,10 @@ export const ErrorEnum = {
     // sys_datasc_msg
     SYS_DATASC_ERR_NOID: [1400, 'ID không tồn tại !'],
 
+    // Spmt00900 
+
+    SPMT009900_ERR_NO_PRODUCT: [1500,'Sản phẩm không tồn tại !'],
+
 
 }
 

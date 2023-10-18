@@ -7,6 +7,28 @@
 //     },
 //     name: DataTypes.STRING(50),
 //   }, { sequelize, modelName: 'color' });
+import { Model, Table, Column, DataType } from "sequelize-typescript";
+
+
+
+@Table({
+    tableName: 'tmt094_productcolors'
+})
+export default class Tmt094ProdcutColor extends Model {
+    @Column({
+        type: DataType.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        field: 'id'
+    })
+    id?: number;
+
+    @Column({
+        type: DataType.STRING(50),
+        field: 'name'
+    })
+    name?: string
+}
 
 // Product.hasMany(ProductVariation, { as: 'variations' });
 // ProductVariation.belongsTo(Product, { foreignKey: 'productId' });
