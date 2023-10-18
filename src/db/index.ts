@@ -83,7 +83,7 @@ class Database {
             targetKey: 'lang'
         })
 
-
+        // quan he nhieu nhieu trong role user
         Sys_User.belongsToMany(Sys_Role, {
             through: "user_role",
             as: "sys_roles",
@@ -96,6 +96,7 @@ class Database {
             foreignKey: "role_id",
         })
 
+        // quan he nhieeu nhieu trong permiss role
         Sys_Role.belongsToMany(Sys_Permission,{
             through: "role_permission",
             as: "sys_permissions",
@@ -108,15 +109,14 @@ class Database {
             foreignKey: "permission_id",
         })
 
+        // quan hệ 1 nhiều. 1 phòng ban có nhiều user
         Sys_Department.hasMany(Sys_User, {as : 'sys_users'})
-
-
         Sys_User.belongsTo(Sys_Department, {
             foreignKey: "department_id",
             as: "sys_departments",
         })
 
-        // 1 menu co nhieu datasc
+        // 1 menu co nhieu. 1 menu có nhiều dư liệu màn hình
         Sys_Permission.hasMany(Sys_Datasc, {as: "sys_datascs"})
         Sys_Datasc.belongsTo(Sys_Permission, {
             foreignKey: "permission_id",
@@ -124,7 +124,7 @@ class Database {
             targetKey: 'lang'
         })
 
-        // 1 user co nhieu file
+        // 1 user co nhieu . 1 user thì sử dụng nhiều file ảnh
         Sys_User.hasMany(Sys_Datafile, {as: 'sys_datafiles'})
         Sys_Datafile.belongsTo(Sys_User, {
             foreignKey: "user_id",

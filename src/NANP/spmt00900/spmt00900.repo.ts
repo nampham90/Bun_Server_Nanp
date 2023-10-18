@@ -9,12 +9,12 @@ interface ISpmt00900Repo<T>  {
     retrieveById(itemcd: string, lang:string): Promise<T>;
 }
 
-type T = Tmt090Product | Tmt090Product[]
+type T = Tmt090Product | Tmt090Product[] | null
 class Spmt00900Repo extends AbstractRepository<T> implements ISpmt00900Repo<T> {
 
     async retrieveById(itemcd: string, lang: string): Promise<T> {
         return await super.execute(async () => {
-            const products = await Tmt090Product.findAll({where: {itemcd: '231018'}, 
+            const products = await Tmt090Product.findOne({where: {itemcd: itemcd, lang: lang}, 
             include: [
                 {
                     model: Tmt092ProdcutVariation,
