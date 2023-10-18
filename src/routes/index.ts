@@ -5,7 +5,7 @@ import sysdepartmentRoutes from '@nanp/system/sysdepartment/sysdepartment.routes
 import SysPermissionRoutes from '@nanp/system/syspermisstion/syspermisstion.routes'
 import sysroleRoutes from '@nanp/system/sysrole/sysrole.routes';
 import sysdatascRoutes from '@nanp/system/sysdatasc/sysdatasc.routes';
-import spmt00900Routes from '@nanp/spmt00900/spmt00900.routes';
+import spmt00900Routes from '@nanp/master/spmt00900/spmt00900.routes';
 
 
 export default class Routes {

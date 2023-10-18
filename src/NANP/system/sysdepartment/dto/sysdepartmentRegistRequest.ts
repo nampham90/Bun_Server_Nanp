@@ -9,7 +9,8 @@ interface Department {
     order_num: number
 }
 export default class SysDepartmentRegistRequest extends AbstractRequest {
-    //public department_name: string = "";
+
+
     public department_Error: string = "";
     // public state: boolean = true;
     // public father_id: number = 0;
