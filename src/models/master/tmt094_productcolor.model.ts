@@ -17,6 +17,13 @@
 // ProductVariation.belongsToMany(Color, { through: 'VariationColor', foreignKey: 'variationId' });
 // Color.belongsToMany(ProductVariation, { through: 'VariationColor', foreignKey: 'colorId' });
 
+// Tmt091ProdcutCategory.hasMany(Tmt090Product, {as: 'tmt090_prodcuts'});
+// Tmt090Product.belongsTo(Tmt091ProdcutCategory, {
+//     foreignKey: "category_id",
+//     as: "tmt091_productcategorys",
+//     targetKey: 'lang'
+// })
+
 
 // -------------------
 
