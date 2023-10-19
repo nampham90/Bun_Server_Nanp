@@ -8,3 +8,4 @@ console.log(hash);
 const isMatch = await Bun.password.verify(password, hash);
 
 console.log(isMatch);
+

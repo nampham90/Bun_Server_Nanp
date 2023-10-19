@@ -1,3 +1,4 @@
+import AbstractRepository from "@common/abstract/AbstractRepository";
 import Logger from "@common/log/logtofile";
 import { PageInfo } from "@common/pageHelper/PageInfo";
 import Sys_Department from "@models/system/sys_department";
@@ -8,27 +9,20 @@ interface SearchCondition {
     department_id?: number;
 }
 
-interface ISysUserRepo {
-    save(department_id: number,user: Sys_User, roleIds: number[]) : Promise<Sys_User | null> ;
-    addUserRoles(userId: number, roleIds: number[]): Promise<void> ;
-    retrieveAll(searchParams: SearchCondition, pageSize: number, pageNum: number): Promise<PageInfo<Sys_User>>;
-    retrieveById(userId: number): Promise<Sys_User | null>;
-    update(user: Sys_User): Promise<number>;
-    changePassword(newpass:string) : Promise<number>;
-    lockAccount(): Promise<number>;
+interface ISysUserRepo<T> {
+    save(department_id: number,user: Sys_User, roleIds: number[]) : Promise<T> ;
+   // addUserRoles(userId: number, roleIds: number[]): Promise<T> ;
+    retrieveAll(searchParams: SearchCondition, pageSize: number, pageNum: number): Promise<T>;
+    retrieveById(userId: number): Promise<T>;
+    update(user: Sys_User): Promise<T>;
+    changePassword(userId: number,newpass:string, oldpass: string) : Promise<T>;
+    lockAccount(): Promise<T>;
 }
-
-class SysUserRepo implements ISysUserRepo {
-    private logger: Logger;
-    
-    constructor() {
-        this.logger = new Logger();
-    }
-
+type T = Sys_User | PageInfo<Sys_User> | null | number | boolean | void
+class SysUserRepo extends AbstractRepository<T> implements ISysUserRepo<T> {
     // đăng ký tài khoản
-    async save(department_id: number,user: Sys_User,roleids: number[]): Promise<Sys_User | null> {
-
-        try {
+    async save(department_id: number,user: Sys_User,roleids: number[]): Promise<T> {
+        return await super.execute(async () => {
             const u = await Sys_User.create({
                 user_name: user.user_name,
                 password: await Bun.password.hash(user.password!,{algorithm: "bcrypt", cost: 4}),
@@ -42,7 +36,6 @@ class SysUserRepo implements ISysUserRepo {
             if(u){
                 await this.addUserRoles(u.id!, roleids);
             }
-
             return await Sys_User.findByPk(u.id, {
                 include: [
                     {
@@ -58,73 +51,75 @@ class SysUserRepo implements ISysUserRepo {
                     }
                 ],
                 attributes: {exclude: ['password']}
-     
             })
-
-        } catch (error) {
-            this.logger.logError(error);
-            throw new Error("Method not implemented.");
-        }
+        })
     }
 
     // add role user
-    async addUserRoles(userId: number, roleIds: number[]): Promise<void> {
-        let listRole: Sys_Role[] = [];
-        try {
-           roleIds.forEach( async (id)=> {
-              const role = await Sys_Role.findByPk(id);
-              if(role){listRole.push(role)}
-           });
-           const user = await Sys_User.findByPk(userId);
-           if(user && listRole.length > 0) {
-               await user.$add('sys_roles', listRole);
-           }
-        } catch (error) {
-            this.logger.logError(error);
-            throw new Error("Method not implemented.");
-        }
+    async addUserRoles(userId: number, roleIds: number[]): Promise<T> {
+        return await super.execute(async () => {
+            let listRole: Sys_Role[] = [];
+            roleIds.forEach( async (id)=> {
+                const role = await Sys_Role.findByPk(id);
+                if(role){listRole.push(role)}
+            });
+            const user = await Sys_User.findByPk(userId);
+            if(user && listRole.length > 0) {
+                await user.$add('sys_roles', listRole);
+            }
+        })
     }
 
     // search all user
-    async retrieveAll(searchParams: SearchCondition, pageSize: number , pageNum: number): Promise<PageInfo<Sys_User>> {
-        try {
-            let n = 0; 
-            if(pageNum > 0) {
-                 n = pageNum - 1;
-            }
+    async retrieveAll(searchParams: SearchCondition, pageSize: number , pageNum: number): Promise<T> {
+        return await super.execute(async () => {
             let condition :any = {};
             if(searchParams.department_id) {
                 condition.department_id = searchParams.department_id;
             }
-            const {rows, count} =  await Sys_User.findAndCountAll({where: condition,limit: pageSize, offset: pageSize*n, attributes: {exclude: ['password']}});
+            const {rows, count} =  await Sys_User.findAndCountAll({where: condition,limit: pageSize, offset: pageSize*( pageNum - 1), attributes: {exclude: ['password']}});
             const pageInfo = new PageInfo(count, rows, pageNum, pageSize);
             return pageInfo;
-        } catch (error) {
-           this.logger.logError(error);
-           throw new Error("Method not implemented.");
-        }
-        
+        })
     }
 
     // tìm kiêm user theo id
-    async retrieveById(userId: number): Promise<Sys_User | null> {
-        try {
+    async retrieveById(userId: number): Promise<T> {
+        return await super.execute(async () => {
             return await Sys_User.findByPk(userId, {include: ['sys_departments']});
-        } catch (error) {
-            this.logger.logError(error);
-            throw new Error("Method not implemented.");
-        }
-       
+        })
     }
 
     // update user
-    async update(user: Sys_User): Promise<number> {
-        throw new Error("Method not implemented.");
+    async update(user: Sys_User): Promise<T> {
+        // return await super.execute(async () => {
+        //     const {user_name, sex, is_available, mobile, roles} = user;
+        // })
+        return null;
     }
 
     // thay đổi password
-    async changePassword(newpass: string): Promise<number> {
-        throw new Error("Method not implemented.");
+    async changePassword(userId: number, newpass: string, oldpass: string): Promise<T> {
+        return await super.execute(async () => {
+            const user = await Sys_User.findOne({where: {id: userId}});
+            if(user) {
+                const checkpassold = await this.checkPasssOld(user, oldpass);
+                if(checkpassold) {
+                    // update new pass
+                    await Sys_User.update({password:newpass}, {where: {id: user.id}});
+                    return 0;
+                }
+                return 99;
+            }
+            return 99;
+        })
+    }
+
+    // kiem tra pass cu co hơp le không
+    private async checkPasssOld(user: Sys_User, passOld: string): Promise<T> {
+        return await super.execute(async () => {
+            return  await Bun.password.verify(passOld, user.password!);
+        })
     }
 
     // khóa tài khoản. chuyển last time out = null
