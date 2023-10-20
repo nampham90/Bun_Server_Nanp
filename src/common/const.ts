@@ -5,8 +5,9 @@ export const SysUserUpdate = '/ant100EditDetailUser';
 export const SysUserCreate = '/ant100AddDetailUser';
 export const SysUserCheckEmail = '/ant100CheckEmailUser';
 export const SysUserCheckName = '/ant100CheckNameUser';
-export const SysUserChangePassword = "ant100ChangePasswordUser";
-export const SysUserLockAccout = "sysUserLockAccout";
+export const SysUserChangePassword = "/ant100ChangePasswordUser";
+export const SysUserLockAccout = "/sysUserLockAccout";
+export const SysUserPermission = "/sysUserPermission";
 
 // routes Sys Role
 export const SysRoleFindAll = '/ant100SearchAllRole';

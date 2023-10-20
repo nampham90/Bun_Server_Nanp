@@ -26,7 +26,7 @@ export default class AbstractRepository<T> {
             }
             return result;
         } catch (error) {
-            this.logger.logError(error);
+            await this.logger.logError(error);
             if(t) {
                 t.rollback();
             }

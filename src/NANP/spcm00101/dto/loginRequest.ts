@@ -4,7 +4,8 @@ import Joi, { Schema } from 'joi';
 interface LoginRequestDto {
     email: string;
     password: string;
-    
+    remember: boolean;
+    mobile: string;
 }
 
 export default class LoginRequest extends AbstractRequest {
@@ -14,6 +15,7 @@ export default class LoginRequest extends AbstractRequest {
     constructor(req: Request, res: Response) {
         super(req,res)
         const {filters} = req.body;
+
         if(filters) {
             const validationResult = this.loginvalidate(filters);
             if(validationResult.error) {
@@ -21,14 +23,18 @@ export default class LoginRequest extends AbstractRequest {
             } else {
                 this.loginRequest = filters as LoginRequestDto;                
             } 
-        } 
+        } else {
+            this.loginValidateError = "Body không hợp lệ !"
+        }
     }
 
 
     private loginvalidate(loginRequest: LoginRequestDto): Joi.ValidationResult {
         const schema: Schema = Joi.object({
             email: Joi.string().min(5).max(100).required().email(),
-            password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{6,20}$')).required()
+            password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{6,20}$')).required(),
+            remember: Joi.allow(),
+            mobile: Joi.allow()
         });
 
         return schema.validate(loginRequest);

@@ -1,11 +1,19 @@
 const password = "super-secure-pa$$word";
-const hash = await Bun.password.hash(password, {
+async function name() {
+  const hash = await Bun.password.hash(password, {
     algorithm: "bcrypt",
   cost: 4, // number between 4-31
-});
-console.log(hash);
+  });
+  console.log(hash);
 
-const isMatch = await Bun.password.verify(password, hash);
+  const isMatch = await Bun.password.verify(password, hash);
+  return isMatch
 
-console.log(isMatch);
+}
+
+name().then((token:boolean) => {
+   console.log(token);
+})
+
+
 

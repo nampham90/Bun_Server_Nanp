@@ -16,6 +16,12 @@ export const ErrorEnum = {
     //spcm00101
     SPCM00101_ERR_EMAIL_LOGIN: [1200, "Email chưa đăng ký !"],
     SPCM00101_ERR_PASS_LOGIN: [1201, " Mật khẩu không đúng !"],
+    SPCM00101_ERR_AUTH_LOGIN: [1202, " Tài khoản của bạn chưa đươc xác thực !"],
+
+    // sys_user msg
+    SYS_USER_ERR_CHANGE_PASS_98: [1700, "Mật khâu củ không đúng !"],
+    SYS_USER_ERR_CHANGE_PASS_99: [1700, "Đổi mật khâu không thành công !"],
+    SYS_USER_ERR_ISNULL: [1701, "Người dùng không tồn tại !"],
 
     
     // sys_role msg

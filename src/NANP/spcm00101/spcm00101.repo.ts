@@ -21,6 +21,10 @@ class Spcm00101LoginRepo extends AbstractRepository<T> implements ISpcm00101Repo
     return  await super.execute(async ()=> {
       const user = await this.checkEmail(condition.email);
       if(user instanceof Sys_User) {
+      // check auth
+        if(!user.last_login_time) {
+          return 3; // Tài khoản của bạn chưa đươc xác thực
+        }
       // check pass
         const checkPassword = await this.checkPassword(user,condition.password);
         if(checkPassword) return user; // đang nhập thanh công

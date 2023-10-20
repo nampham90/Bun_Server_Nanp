@@ -24,7 +24,7 @@ export default class Server {
 
     private config() :void {
         const corsOptions: CorsOptions = {
-            origin: "http://localhost:8080", // Thay đổi origin tùy theo nhu cầu của bạn
+            origin: "http://localhost:4201", // Thay đổi origin tùy theo nhu cầu của bạn
             methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Các phương thức được phép
             credentials: true, // Cho phép gửi cookie và thông tin xác thực qua CORS
             optionsSuccessStatus: 204, // Trạng thái thành công khi gửi yêu cầu OPTIONS
@@ -36,6 +36,23 @@ export default class Server {
         this.app.use(bodyParser.json());
         this.app.use(express.urlencoded({extended: true}));
         this.app.use(handleJsonError);
+        // this.app.use(function (req:Request, res:Response, next: NextFunction) {
+        //     // Website you wish to allow to connect
+        //     res.setHeader('Access-Control-Allow-Origin', '*');
+          
+        //     // Request methods you wish to allow
+        //     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+          
+        //     // Request headers you wish to allow
+        //     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+          
+        //     // Set to true if you need the website to include cookies in the requests sent
+        //     // to the API (e.g. in case you use sessions)
+        //    // res.setHeader('Access-Control-Allow-Credentials', "");
+          
+        //     // Pass to next layer of middleware
+        //     next();
+        //   });
     }
 
     private syncDatabase(): void {

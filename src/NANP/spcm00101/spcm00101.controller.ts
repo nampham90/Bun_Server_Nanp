@@ -28,18 +28,20 @@ export default class Spmt00101Controller extends AbstractController<T>{
                   listRoleId.push(role.id!);
                })
             }
-            const {id, user_name} = kq;
+            const {id, user_name, email} = kq;
             const strCode = await spcm00101Repo.roleOfPermisstion(id!);
             const payload = {
                userId: id,
                username: user_name,
                roles: listRoleId,
                permission: strCode,
+               email: email
             };
             const newToken = jwt.sign(payload, authConfig.jwtSecret! , {expiresIn: '1000h',});
             return Result.success(newToken);
          } else {
             if(kq === 1) return Result.failureCode(ErrorEnum.SPCM00101_ERR_EMAIL_LOGIN);
+            else if(kq === 3) return Result.failureCode(ErrorEnum.SPCM00101_ERR_AUTH_LOGIN);
             return Result.failureCode(ErrorEnum.SPCM00101_ERR_PASS_LOGIN);
          }
       })

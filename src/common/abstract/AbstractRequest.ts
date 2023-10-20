@@ -26,7 +26,7 @@ export default class AbstractRequest {
             this.userId = userId;
             this.username = username;
         }
-       
+
         this.pageNum = req.body.pageNum || 1;
         this.pageSize = req.body.pageSize || 10;
 

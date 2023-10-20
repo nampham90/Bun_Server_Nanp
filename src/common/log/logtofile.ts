@@ -23,11 +23,16 @@ export default class Logger{
         if(!checkfile) {
             await Bun.write(this.logFilePath, "New log ---------------\n")
         } else {
-           const curentMsg = await file.stream();
-           const str = await Bun.readableStreamToText(curentMsg);
-           const writer = await file.writer();
-           writer.write(str+logMessage);
-           await writer.flush();
+            try {
+                const curentMsg =  file.stream();
+                const str = await Bun.readableStreamToText(curentMsg);
+                const writer =  file.writer();
+                writer.write(str+logMessage);
+                await writer.flush();
+            } catch (error) {
+                throw new Error("Lỗi ghí logger file !")
+            }
+
         }
        
     }

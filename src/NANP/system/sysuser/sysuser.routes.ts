@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as Const from '@common/const'
 import SysUserController from "./sysuser.controller";
+import { checkJwt } from "@middlewares/checkJwt";
 
 class SysUserRoutes {
     router = Router();
@@ -12,12 +13,13 @@ class SysUserRoutes {
     }
 
     intializeRoutes() {
-        this.router.post(Const.SysUserCreate, this.sysUserController.create);
-        this.router.post(Const.SysUserUpdate, this.sysUserController.update);
-        this.router.post(Const.SysUserFindAll, this.sysUserController.findAll);
-        this.router.post(Const.SysUserFindById, this.sysUserController.findById);
-        this.router.post(Const.SysUserChangePassword, this.sysUserController.changePassword);
-        this.router.post(Const.SysUserLockAccout, this.sysUserController.lockAccount);
+        this.router.post(Const.SysUserCreate,[checkJwt], this.sysUserController.create);
+        this.router.post(Const.SysUserUpdate,[checkJwt], this.sysUserController.update);
+        this.router.post(Const.SysUserFindAll,[checkJwt], this.sysUserController.findAll);
+        this.router.post(Const.SysUserFindById,[checkJwt], this.sysUserController.findById);
+        this.router.post(Const.SysUserPermission, [checkJwt], this.sysUserController.userPermission);
+        this.router.post(Const.SysUserChangePassword,[checkJwt], this.sysUserController.changePassword);
+        this.router.post(Const.SysUserLockAccout,[checkJwt], this.sysUserController.lockAccount);
     }
 }
 
